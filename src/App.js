@@ -77,26 +77,33 @@ function reducer(state, action) {
 }
 
 export default function App() {
-    const [
-        {
-            questions,
-            status,
-            index,
-            answer,
-            points,
-            highScore,
-            secondsRemaining,
-        },
-        dispatch,
-    ] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const {
+        questions,
+        status,
+        index,
+        answer,
+        points,
+        highScore,
+        secondsRemaining,
+    } = state;
 
     const numQuestions = questions.length;
     const maxPoints = questions.reduce((acc, cur) => acc + cur.points, 0);
 
     useEffect(function () {
-        fetch("http://localhost:8000/questions")
+        /* 
+            For json-server package:
+            - fetch at this URL: http://localhost:8000/questions
+            - and set the payload to just 'data'
+        */
+
+        // The below URL and payload is for Netlify deployment
+        fetch("/.netlify/functions/getData")
             .then((res) => res.json())
-            .then((data) => dispatch({ type: "dataReceived", payload: data }))
+            .then((data) =>
+                dispatch({ type: "dataReceived", payload: data.questions })
+            )
             .catch((err) => dispatch({ type: "dataFailed" }));
     }, []);
 
