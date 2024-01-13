@@ -98,6 +98,12 @@ export default function App() {
             - and set the payload to just 'data'
         */
 
+        /* 
+            For netlify functions:
+            - fetch at this URL: /.netlify/functions/getData
+            - and set the payload to 'data.questions'
+        */
+
         // The below URL and payload is for Netlify deployment
         fetch("/.netlify/functions/getData")
             .then((res) => res.json())
